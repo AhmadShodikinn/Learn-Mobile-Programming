@@ -1,0 +1,1 @@
+Berikut adalah beberapa hasil screenshot dari praktikum yang ada.

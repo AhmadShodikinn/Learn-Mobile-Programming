@@ -18,6 +18,9 @@ class _MyAppState extends State<MyApp> {
   String _newValue = "Celsius"; // Set nilai default
   double _result = 0;
 
+  List<String> listViewItem =
+      <String>[]; // Digunakan untuk menyimpan histori konversi
+
   void perhitunganSuhu() {
     setState(() {
       // Mengambil input dari TextFormField dan mengonversinya ke double
@@ -30,6 +33,9 @@ class _MyAppState extends State<MyApp> {
       else if (_newValue == "Reamur")
         _result = (4 / 5) * _inputUser;
       else if (_newValue == "Kelvin") _result = _inputUser + 273;
+
+      // Menambahkan hasil konversi ke histori
+      listViewItem.add('$_inputUser $_newValue = $_result ${listItem[0]}');
     });
   }
 
@@ -74,6 +80,14 @@ class _MyAppState extends State<MyApp> {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
+              SizedBox(height: 20),
+              Text(
+                "Histori Konversi Suhu",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              Expanded(
+                child: RiwayatKonversi(listViewItem: listViewItem),
+              ),
             ],
           ),
         ),
@@ -106,6 +120,27 @@ class Result extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class RiwayatKonversi extends StatelessWidget {
+  final List<String> listViewItem;
+
+  RiwayatKonversi({required this.listViewItem});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: listViewItem.map((String value) {
+        return Container(
+          margin: EdgeInsets.all(10),
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 15),
+          ),
+        );
+      }).toList(),
     );
   }
 }

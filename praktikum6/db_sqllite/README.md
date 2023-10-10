@@ -1,16 +1,13 @@
-# db_sqllite
+# Screenshot mobile
 
-A new Flutter project.
+home : 
 
-## Getting Started
+![image](https://github.com/AhmadShodikinn/Learn-Mobile-Programming/assets/82855392/016b8952-314c-4f45-a61f-39d0226cde55)
 
-This project is a starting point for a Flutter application.
+add item : 
 
-A few resources to get you started if this is your first Flutter project:
+![image](https://github.com/AhmadShodikinn/Learn-Mobile-Programming/assets/82855392/415dfd0e-e107-460d-9df3-d09c398b8153)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+home after add:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://github.com/AhmadShodikinn/Learn-Mobile-Programming/assets/82855392/8cf2c836-ccbf-4e25-ba7b-f2194e15e623)

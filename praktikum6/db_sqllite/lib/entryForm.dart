@@ -8,30 +8,27 @@ class EntryForm extends StatefulWidget {
   EntryFormState createState() => EntryFormState(this.item);
 }
 
-//class controller
 class EntryFormState extends State<EntryForm> {
   Item item;
   EntryFormState(this.item);
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-//kondisi
-    if (item != null) {
-      nameController.text = item.name;
-      priceController.text = item.price.toString();
-    }
-//rubah
+    nameController.text = item.name;
+    priceController.text = item.price.toString();
+
     return Scaffold(
       appBar: AppBar(
-        title: item == null ? Text('Tambah') : Text('Ubah'),
+        title: Text(item.id == null ? 'Tambah Item' : 'Edit Item'),
         leading: Icon(Icons.keyboard_arrow_left),
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
         child: ListView(
           children: <Widget>[
-// nama
             Padding(
               padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: TextField(
@@ -43,13 +40,9 @@ class EntryFormState extends State<EntryForm> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
-                onChanged: (value) {
-//
-                },
+                onChanged: (value) {},
               ),
             ),
-
-// harga    // harga
             Padding(
               padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: TextField(
@@ -61,47 +54,58 @@ class EntryFormState extends State<EntryForm> {
                     borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
-                onChanged: (value) {
-//
-                },
+                onChanged: (value) {},
               ),
             ),
-
+            Padding(
+              padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+              child: TextField(
+                controller: typeController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  labelText: 'Jenis Barang',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                onChanged: (value) {},
+              ),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: Row(children: <Widget>[
                 Expanded(
-                    child: ElevatedButton(
-                  child: Text(
-                    'Simpan',
-                    textScaleFactor: 1.5,
-                  ),
-                  onPressed: () {
-                    if (item == null) {
-// tambah data
-                      item = Item(
-                          nameController.text, int.parse(priceController.text));
-                    } else {
-                      // ubah data
+                  child: ElevatedButton(
+                    child: Text(
+                      'Simpan',
+                      textScaleFactor: 1.5,
+                    ),
+                    onPressed: () {
+                      item = Item(nameController.text,
+                          int.tryParse(priceController.text) ?? 0);
+
                       item.name = nameController.text;
-                      item.price = int.parse(priceController.text);
-                    }
-                    Navigator.pop(context, item);
-                  },
-                )),
+                      item.price = int.tryParse(priceController.text) ?? 0;
+                      item.type = typeController.text;
+
+                      Navigator.pop(context, item);
+                    },
+                  ),
+                ),
                 Container(width: 5.0),
                 Expanded(
-                    child: ElevatedButton(
-                  child: Text(
-                    'Batal',
-                    textScaleFactor: 1.5,
+                  child: ElevatedButton(
+                    child: const Text(
+                      'Batal',
+                      textScaleFactor: 1.5,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ))
+                ),
               ]),
-            )
+            ),
           ],
         ),
       ),

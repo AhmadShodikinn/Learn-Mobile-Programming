@@ -8,44 +8,65 @@ class DbHelper {
   static DbHelper? _dbHelper;
   static Database? _database;
   DbHelper._createObject();
+
   Future<Database> initDb() async {
-//untuk menentukan nama database dan lokasi yg dibuat
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'item.db';
-//create, read databases
-    var itemDatabase = openDatabase(path, version: 4, onCreate: _createDb);
-//mengembalikan nilai object sebagai hasil dari fungsinya
+
+    var itemDatabase = await openDatabase(
+      path,
+      version: 8, // Increment the version number
+      onCreate: _createDb,
+      onUpgrade: _upgradeDb,
+    );
+
     return itemDatabase;
   }
 
-//buat tabel baru dengan nama item
   void _createDb(Database db, int version) async {
     await db.execute('''
-CREATE TABLE item (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT,
-price INTEGER
-)
-''');
+      CREATE TABLE item (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        price INTEGER,
+        type TEXT
+      )
+    ''');
+  }
+
+  void _upgradeDb(Database db, int oldVersion, int newVersion) async {
+    if (newVersion > oldVersion) {
+      // Drop the existing 'item' table.
+      await db.execute('DROP TABLE IF EXISTS item');
+      // Create the 'item' table again with the updated schema.
+      await db.execute('''
+        CREATE TABLE item (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT,
+          price INTEGER,
+          type TEXT
+        )
+      ''');
+    }
   }
 
 //select databases
   Future<List<Map<String, dynamic>>> select() async {
-    Database db = await this.initDb();
+    Database db = await initDb();
     var mapList = await db.query('item', orderBy: 'name');
     return mapList;
   }
 
 //create databases
   Future<int> insert(Item object) async {
-    Database db = await this.initDb();
+    Database db = await initDb();
     int count = await db.insert('item', object.toMap());
     return count;
   }
 
 //update databases
   Future<int> update(Item object) async {
-    Database db = await this.initDb();
+    Database db = await initDb();
     int count = await db
         .update('item', object.toMap(), where: 'id=?', whereArgs: [object.id]);
     return count;
@@ -53,7 +74,7 @@ price INTEGER
 
 //delete databases
   Future<int> delete(int id) async {
-    Database db = await this.initDb();
+    Database db = await initDb();
     int count = await db.delete('item', where: 'id=?', whereArgs: [id]);
     return count;
   }
